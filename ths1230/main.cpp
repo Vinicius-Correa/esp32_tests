@@ -1,11 +1,10 @@
 #include <Arduino.h>
-#define   D0   11
-#define   PINS 12
 
 uint16_t measure;
+uint32_t PINS=0x00EFF800;
 
 void parallel_set_inputs(void) {
-  REG_WRITE(GPIO_ENABLE_W1TC_REG, 0x1DFF << D0);
+  REG_WRITE(GPIO_ENABLE_W1TC_REG, PINS);
 }
 uint16_t parallel_read(void) {
   uint32_t input = REG_READ(GPIO_IN_REG);
@@ -15,9 +14,9 @@ uint16_t parallel_read(void) {
 }
 void setup() {
   Serial.begin(115200);
-  for (int i = 0; i < PINS+1; i++) {
-    if (D0 + i != 20)
-      pinMode(D0 + i, INPUT);
+  for (int i = 0; i < 32; i++) {
+    if (PINS && i == 1)
+      pinMode(i, INPUT);
   }
   parallel_set_inputs();
   delay(1000);
