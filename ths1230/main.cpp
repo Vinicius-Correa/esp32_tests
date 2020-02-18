@@ -11,6 +11,7 @@ uint16_t parallel_read(uint32_t entrada) {
    uint16_t output = 0;
    uint32_t input = REG_READ(GPIO_IN_REG);
    for(int i = 0; i < 32; i++) {
+      output = output << 1;
       LSB = entrada & 1;
       if (LSB == 1)
          bit = input & 1;
@@ -18,7 +19,6 @@ uint16_t parallel_read(uint32_t entrada) {
          output = output + 1;
       entrada = entrada >> 1;
       input = input >> 1;
-      output = output << 1;
    }
    return(output);
 }
